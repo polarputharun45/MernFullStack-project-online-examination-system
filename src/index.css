@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8faff;
+  color: #1f2937;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+.navbar {
+  z-index: 1000;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #f8faff 0%, #eef5ff 100%);
+}
+
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8faff 0%, #eef5ff 100%);
+}
