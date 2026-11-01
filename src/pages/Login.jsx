@@ -5,6 +5,11 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import "./Login.css";
 
+// Backend URL from Vercel environment variables
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "");
+
 const Login = () => {
   const navigate = useNavigate();
   const { setBackendUser } = useAuth();
@@ -50,7 +55,7 @@ const Login = () => {
       setError("");
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${API_URL}/api/auth/login`,
         {
           email: formData.email.trim(),
           password: formData.password,
@@ -105,7 +110,7 @@ const Login = () => {
       setForgotLoading(true);
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/forgot-password",
+        `${API_URL}/api/auth/forgot-password`,
         {
           email: forgotEmail.trim(),
         }
