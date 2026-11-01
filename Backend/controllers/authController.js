@@ -19,12 +19,12 @@ const transporter = nodemailer.createTransport({
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, branch } = req.body;
 
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password || !role || !branch) {
       return res.status(400).json({
         success: false,
-        message: "Name, email, password and role are required.",
+        message: "All fields are required.",
       });
     }
 
@@ -49,10 +49,11 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-      name,
+      name: name.trim(),
       email: email.toLowerCase().trim(),
       password: hashedPassword,
       role,
+      branch: branch.trim(),
     });
 
     return res.status(201).json({
@@ -63,6 +64,7 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        branch: user.branch,
       },
     });
   } catch (error) {
@@ -195,11 +197,13 @@ const forgotPassword = async (req, res) => {
     const clientUrl = process.env.CLIENT_URL;
 
     if (!clientUrl) {
-      throw new Error("CLIENT_URL is missing from environment variables.");
+      throw new Error(
+        "CLIENT_URL is missing from environment variables."
+      );
     }
 
     const resetUrl =
-      `${clientUrl.replace(/\/$/, "")}/reset-password/${resetToken}`;
+      `${clientUrl.replace(/\/+$/, "")}/reset-password/${resetToken}`;
 
     // Send password reset email.
     try {
