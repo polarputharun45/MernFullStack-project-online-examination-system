@@ -1,8 +1,12 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Register.css";
+
+// Backend URL from Vercel environment variables
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "");
 
 const Register = () => {
   const navigate = useNavigate();
@@ -72,7 +76,7 @@ const Register = () => {
       setSuccess("");
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${API_URL}/api/auth/register`,
         {
           name: name.trim(),
           email: email.trim(),
