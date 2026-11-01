@@ -1,9 +1,11 @@
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./AdminAssignQuestions.css";
 
-const API_URL = "http://localhost:5000/api";
+// Backend URL from Vercel environment variable
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api";
 
 // Get JWT token for backend authentication
 const getAuthConfig = () => {
@@ -35,7 +37,10 @@ const AdminAssignQuestions = () => {
 
         const config = getAuthConfig();
 
-        if (!config.headers.Authorization || config.headers.Authorization === "Bearer null") {
+        if (
+          !config.headers.Authorization ||
+          config.headers.Authorization === "Bearer null"
+        ) {
           setError("Please login again as Admin.");
           return;
         }
@@ -65,7 +70,7 @@ const AdminAssignQuestions = () => {
 
         setError(
           err.response?.data?.message ||
-          "Unable to load exams and questions."
+            "Unable to load exams and questions."
         );
       } finally {
         setLoading(false);
@@ -89,7 +94,9 @@ const AdminAssignQuestions = () => {
     if (selectedQuestions.length === questions.length) {
       setSelectedQuestions([]);
     } else {
-      setSelectedQuestions(questions.map((item) => item._id));
+      setSelectedQuestions(
+        questions.map((item) => item._id)
+      );
     }
   };
 
@@ -127,7 +134,7 @@ const AdminAssignQuestions = () => {
 
       setError(
         err.response?.data?.message ||
-        "Unable to assign questions."
+          "Unable to assign questions."
       );
     } finally {
       setAssigning(false);

@@ -1,9 +1,11 @@
-
 import { Link } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import "./StudentDashboard.css";
-const API_URL = "http://localhost:5000/api";
+
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api";
 
 const StudentDashboard = () => {
   const { user, logout } = useAuth();
@@ -20,7 +22,6 @@ const StudentDashboard = () => {
     if (result.exam && typeof result.exam === "object") {
       return result.exam._id;
     }
-
     return result.exam;
   };
 
@@ -28,7 +29,6 @@ const StudentDashboard = () => {
     if (result.exam && typeof result.exam === "object") {
       return result.exam.title || "Examination";
     }
-
     return result.examTitle || "Examination";
   };
 
@@ -36,7 +36,6 @@ const StudentDashboard = () => {
     if (result.exam && typeof result.exam === "object") {
       return result.exam.subject || "General";
     }
-
     return result.subject || "General";
   };
 
@@ -115,7 +114,6 @@ const StudentDashboard = () => {
       setExams(examList.filter((exam) => exam.isActive !== false));
       setResults(resultList);
 
-      // Load the attempt count for each active exam.
       const statusEntries = await Promise.all(
         examList
           .filter((exam) => exam.isActive !== false && exam._id)
@@ -129,7 +127,6 @@ const StudentDashboard = () => {
               if (!response.ok) return [exam._id, null];
 
               const data = await response.json();
-
               return [exam._id, data];
             } catch {
               return [exam._id, null];
@@ -163,22 +160,17 @@ const StudentDashboard = () => {
     };
   }, [loadDashboard]);
 
-  // Sort results newest first.
   const sortedResults = [...results].sort((a, b) => {
     const dateA = new Date(getResultDate(a) || 0).getTime();
     const dateB = new Date(getResultDate(b) || 0).getTime();
-
     return dateB - dateA;
   });
 
-  // Keep only the latest result for each exam in Recent Results.
   const latestResults = [];
   const seenExamIds = new Set();
 
   sortedResults.forEach((result) => {
     const examId = getExamId(result);
-
-    // Use result ID as a fallback if the exam ID is unavailable.
     const uniqueKey = examId
       ? String(examId)
       : `result-${result._id}`;
@@ -189,7 +181,6 @@ const StudentDashboard = () => {
     }
   });
 
-  // These statistics use actual saved submissions.
   const completedAttempts = results.length;
 
   const passedAttempts = results.filter(
@@ -208,7 +199,6 @@ const StudentDashboard = () => {
 
   return (
     <div className="student-dashboard">
-      {/* Navigation */}
       <nav className="dashboard-navbar">
         <div className="dashboard-container">
           <Link to="/student/dashboard" className="dashboard-logo">
@@ -229,7 +219,6 @@ const StudentDashboard = () => {
       </nav>
 
       <main className="dashboard-container">
-        {/* Welcome */}
         <section className="welcome-section">
           <div>
             <p className="dashboard-label">STUDENT DASHBOARD</p>
@@ -254,7 +243,6 @@ const StudentDashboard = () => {
           </div>
         )}
 
-        {/* Statistics */}
         <section className="stats-grid">
           <div className="stat-card">
             <div className="stat-icon">📚</div>
@@ -289,11 +277,7 @@ const StudentDashboard = () => {
           </div>
         </section>
 
-        {/* Available Exams */}
-        <section
-          id="available-exams"
-          className="dashboard-section"
-        >
+        <section id="available-exams" className="dashboard-section">
           <div className="section-header">
             <div>
               <h2>Available Exams</h2>
@@ -315,10 +299,14 @@ const StudentDashboard = () => {
             <div className="exam-grid">
               {exams.slice(0, 6).map((exam) => {
                 const attempt = attemptStatuses[exam._id];
+
                 const maxAttempts = Number(
                   attempt?.maxAttempts ?? exam.maxAttempts ?? 1
                 );
-                const attemptsUsed = Number(attempt?.attemptsUsed ?? 0);
+
+                const attemptsUsed = Number(
+                  attempt?.attemptsUsed ?? 0
+                );
 
                 const canAttempt =
                   attempt?.canAttempt !== false &&
@@ -348,7 +336,6 @@ const StudentDashboard = () => {
                       <span>
                         ❓ {exam.totalQuestions || 0} Questions
                       </span>
-
                       <span>⏱ {exam.duration || 0} min</span>
                     </div>
 
@@ -380,7 +367,6 @@ const StudentDashboard = () => {
           )}
         </section>
 
-        {/* Recent Results - latest result per exam only */}
         <section id="results" className="dashboard-section">
           <div className="section-header">
             <div>
@@ -434,7 +420,6 @@ const StudentDashboard = () => {
           </div>
         </section>
 
-        {/* Profile */}
         <section id="profile" className="profile-section">
           <h2>My Profile</h2>
 

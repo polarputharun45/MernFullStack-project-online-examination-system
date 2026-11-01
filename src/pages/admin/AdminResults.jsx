@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 
-const API_URL = "http://localhost:5000/api/results";
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api/results";
 
 const AdminResults = () => {
   const [results, setResults] = useState([]);

@@ -1,9 +1,10 @@
-
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./ExamResult.css";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api";
 
 const ExamResult = () => {
   const { examId } = useParams();
@@ -13,11 +14,13 @@ const ExamResult = () => {
   const [result, setResult] = useState(
     navigationState.result || null
   );
+
   const [examTitle, setExamTitle] = useState(
     navigationState.examTitle ||
       navigationState.result?.exam?.title ||
       ""
   );
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -82,7 +85,9 @@ const ExamResult = () => {
         }
 
         const savedResult = data.result || data;
+
         setResult(savedResult);
+
         setExamTitle(
           savedResult.exam?.title ||
             savedResult.examTitle ||
@@ -100,7 +105,10 @@ const ExamResult = () => {
   }, [examId]);
 
   const score = Number(result?.score ?? 0);
-  const total = Number(result?.totalQuestions ?? result?.total ?? 0);
+
+  const total = Number(
+    result?.totalQuestions ?? result?.total ?? 0
+  );
 
   const percentage = Number(
     result?.percentage ??
@@ -109,6 +117,7 @@ const ExamResult = () => {
 
   const status =
     result?.status || (percentage >= 40 ? "Passed" : "Failed");
+
   const passed = status === "Passed";
 
   const actualExamTitle =
@@ -146,7 +155,10 @@ const ExamResult = () => {
           <section className="exam-result-message">
             <h2>Result Unavailable</h2>
             <p>{error}</p>
-            <Link to="/student/results" className="exam-result-primary-btn">
+            <Link
+              to="/student/results"
+              className="exam-result-primary-btn"
+            >
               Open My Results
             </Link>
           </section>
@@ -157,7 +169,10 @@ const ExamResult = () => {
               We could not find a valid score for this examination.
               Please open My Results and select a saved result.
             </p>
-            <Link to="/student/results" className="exam-result-primary-btn">
+            <Link
+              to="/student/results"
+              className="exam-result-primary-btn"
+            >
               Open My Results
             </Link>
           </section>
@@ -179,7 +194,8 @@ const ExamResult = () => {
               </h1>
 
               <p className="exam-result-subtitle">
-                You have completed the examination. Here is your performance summary.
+                You have completed the examination. Here is your
+                performance summary.
               </p>
             </header>
 
@@ -200,7 +216,12 @@ const ExamResult = () => {
                   <strong>{percentage}%</strong>
                   <span>YOUR SCORE</span>
                 </div>
-                <p className={`exam-result-status ${passed ? "status-passed" : "status-failed"}`}>
+
+                <p
+                  className={`exam-result-status ${
+                    passed ? "status-passed" : "status-failed"
+                  }`}
+                >
                   {status}
                 </p>
               </div>
@@ -236,7 +257,8 @@ const ExamResult = () => {
               <div className="exam-result-note">
                 <strong>Performance Summary</strong>
                 <p>
-                  You scored {score} out of {total} marks, achieving {percentage}%.
+                  You scored {score} out of {total} marks, achieving{" "}
+                  {percentage}%.
                 </p>
               </div>
             </section>

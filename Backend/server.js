@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -24,7 +23,18 @@ const app = express();
 
 // ================= MIDDLEWARE =================
 
-app.use(cors());
+// CORS configuration for Vercel frontend and local development
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(",").map((url) => url.trim())
+  : ["http://localhost:5173"];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // Debug: Log every incoming request
@@ -73,7 +83,7 @@ const startServer = async () => {
 
     app.listen(PORT, () => {
       console.log(
-        `ExamPro Backend running on http://localhost:${PORT}`
+        `ExamPro Backend running on port ${PORT}`
       );
     });
   } catch (error) {

@@ -1,9 +1,10 @@
-
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./AvailableExams.css";
 
-const API_URL = "http://localhost:5000/api/exams";
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api/exams";
 
 const AvailableExams = () => {
   const [exams, setExams] = useState([]);
@@ -226,7 +227,9 @@ const AvailableExams = () => {
                   <div className="available-info-item">
                     <span className="available-info-icon">📝</span>
                     <div>
-                      <span className="available-info-label">Questions</span>
+                      <span className="available-info-label">
+                        Questions
+                      </span>
                       <strong>{Number(exam.totalQuestions || 0)}</strong>
                     </div>
                   </div>
@@ -234,15 +237,21 @@ const AvailableExams = () => {
                   <div className="available-info-item">
                     <span className="available-info-icon">⏱️</span>
                     <div>
-                      <span className="available-info-label">Duration</span>
-                      <strong>{Number(exam.duration || 0)} Minutes</strong>
+                      <span className="available-info-label">
+                        Duration
+                      </span>
+                      <strong>
+                        {Number(exam.duration || 0)} Minutes
+                      </strong>
                     </div>
                   </div>
 
                   <div className="available-info-item">
                     <span className="available-info-icon">📊</span>
                     <div>
-                      <span className="available-info-label">Difficulty</span>
+                      <span className="available-info-label">
+                        Difficulty
+                      </span>
                       <strong>{exam.difficulty || "Beginner"}</strong>
                     </div>
                   </div>

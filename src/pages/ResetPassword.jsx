@@ -1,7 +1,10 @@
-
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "");
 
 function ResetPassword() {
   const { token } = useParams();
@@ -33,7 +36,7 @@ function ResetPassword() {
       setLoading(true);
 
       const response = await axios.post(
-        `http://localhost:5000/api/auth/reset-password/${token}`,
+        `${API_URL}/api/auth/reset-password/${token}`,
         { password }
       );
 

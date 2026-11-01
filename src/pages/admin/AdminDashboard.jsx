@@ -1,9 +1,13 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import "./AdminDashboard.css";
+
+// Backend URL from Vercel environment variable
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api";
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
@@ -27,8 +31,13 @@ const AdminDashboard = () => {
 
         const token = localStorage.getItem("examproToken");
 
+        if (!token) {
+          setError("Please login again as Admin.");
+          return;
+        }
+
         const response = await axios.get(
-          "http://localhost:5000/api/dashboard/stats",
+          `${API_URL}/dashboard/stats`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -38,12 +47,14 @@ const AdminDashboard = () => {
 
         if (response.data.success) {
           setStatistics(response.data.statistics);
-          setRecentExams(response.data.recentExams);
+          setRecentExams(response.data.recentExams || []);
         }
       } catch (err) {
         console.error("Dashboard Error:", err);
+
         setError(
-          "Unable to load dashboard data. Please check the backend server."
+          err.response?.data?.message ||
+            "Unable to load dashboard data. Please check the backend server."
         );
       } finally {
         setLoading(false);
@@ -294,7 +305,11 @@ const AdminDashboard = () => {
 
           <div className="system-status">
             <span className="status-dot"></span>
-            {error ? "Check Connection" : loading ? "Loading" : "Connected"}
+            {error
+              ? "Check Connection"
+              : loading
+                ? "Loading"
+                : "Connected"}
           </div>
         </section>
       </main>

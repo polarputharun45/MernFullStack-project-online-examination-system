@@ -1,8 +1,9 @@
-
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const API_URL = "http://localhost:5000/api/exams";
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api/exams";
 
 function getQuestionText(question) {
   const candidates = [
@@ -29,9 +30,9 @@ function getQuestionText(question) {
 function getDurationInSeconds(exam) {
   const duration = Number(
     exam?.duration ??
-    exam?.durationMinutes ??
-    exam?.timeLimit ??
-    exam?.examDuration
+      exam?.durationMinutes ??
+      exam?.timeLimit ??
+      exam?.examDuration
   );
 
   if (!Number.isFinite(duration) || duration <= 0) {
@@ -48,10 +49,15 @@ function formatTime(seconds) {
   const remaining = safeSeconds % 60;
 
   if (hours > 0) {
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(remaining).padStart(2, "0")}`;
   }
 
-  return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
+  return `${String(minutes).padStart(2, "0")}:${String(
+    remaining
+  ).padStart(2, "0")}`;
 }
 
 export default function Exam() {
@@ -533,7 +539,9 @@ export default function Exam() {
             }}
           >
             <div className="exam-empty-icon">📝</div>
-            <h2 style={{ color: "#0f172a" }}>No Questions Available</h2>
+            <h2 style={{ color: "#0f172a" }}>
+              No Questions Available
+            </h2>
             <p style={{ color: "#475569" }}>
               There are currently no questions assigned to this exam.
             </p>

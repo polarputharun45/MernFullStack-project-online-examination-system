@@ -1,8 +1,9 @@
-
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-const API_URL = "http://localhost:5000/api/exams";
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000"
+).replace(/\/+$/, "") + "/api/exams";
 
 const ExamInstructions = () => {
   const { examId } = useParams();
