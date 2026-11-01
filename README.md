@@ -1,15 +1,15 @@
 
 # ExamPro - Online Examination System
 
-ExamPro is a MERN stack based online examination system developed as a full-stack project.
+ExamPro is a MERN stack project developed to make the online examination process easier.
 
-The main purpose of this project is to make the examination process easier for both students and administrators.
+In this project, students can register, log in, view available exams, attend examinations and check their results. The admin can manage exams, questions and student details through the admin dashboard.
 
-Students can create an account, log in, view available exams, attend examinations and check their results. Administrators can manage exams, questions and student details through the admin dashboard.
+I developed this project using React.js, Node.js, Express.js and MongoDB.
 
 ## Technologies Used
 
-**Frontend**
+### Frontend
 - React.js
 - Vite
 - JavaScript
@@ -17,15 +17,15 @@ Students can create an account, log in, view available exams, attend examination
 - CSS
 - Bootstrap
 
-**Backend**
+### Backend
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
 - JWT Authentication
 
-**Tools**
-- Visual Studio Code
+### Tools
+- VS Code
 - Git and GitHub
 - Vercel
 - Render
@@ -33,25 +33,26 @@ Students can create an account, log in, view available exams, attend examination
 ## Features
 
 ### Student Module
-- Student registration and login
+- Student registration
+- Student login
 - Student dashboard
 - View available examinations
-- View examination instructions
+- Read exam instructions
 - Attend online examinations
-- Submit exam answers
-- Check examination results
+- Submit answers
+- View examination results
 
 ### Admin Module
 - Admin login
 - Admin dashboard
 - Create and manage examinations
 - Manage question bank
-- Add, edit and manage questions
+- Add and manage questions
 - Assign questions to examinations
 - Manage student details
 - View examination results
 
-## Screenshots
+## Project Screenshots
 
 ### Student Side
 
@@ -112,7 +113,7 @@ Students can create an account, log in, view available exams, attend examination
 ## Project Structure
 
 ```text
-MernFullStack-project-online-examination-system/
+ONLINE EXAMINATION SYSTEM/
 │
 ├── Backend/
 │   ├── config/
@@ -138,7 +139,7 @@ MernFullStack-project-online-examination-system/
 └── README.md
 ```
 
-## How to Run Locally
+## How to Run the Project Locally
 
 ### 1. Clone the Repository
 
@@ -147,8 +148,6 @@ git clone https://github.com/polarputharun45/MernFullStack-project-online-examin
 ```
 
 ### 2. Install Frontend Dependencies
-
-Run this command in the project root:
 
 ```bash
 npm install
@@ -163,9 +162,7 @@ npm install
 
 ### 4. Configure Environment Variables
 
-Create a `.env` file inside the `Backend` folder.
-
-Add the required variables:
+Create a `.env` file inside the Backend folder and add the required environment variables:
 
 ```env
 PORT=5000
@@ -177,11 +174,9 @@ CLIENT_URL=http://localhost:5173
 ADMIN_PASSWORD=your_admin_password
 ```
 
-Replace the sample values with your own credentials. Do not upload your `.env` file or secret values to GitHub.
+Use your own credentials. Do not upload secret values to GitHub.
 
 ### 5. Start the Backend
-
-Inside the Backend folder:
 
 ```bash
 npm start
@@ -195,23 +190,20 @@ Open another terminal in the project root:
 npm run dev
 ```
 
-## Live Deployment
+## Live Project
 
-**Frontend:**  
-https://mern-full-stack-project-online-exam.vercel.app
-
-**Backend:**  
-https://mernfullstack-project-online-examination.onrender.com
+- Frontend: https://mern-full-stack-project-online-exam.vercel.app
+- Backend: https://mernfullstack-project-online-examination.onrender.com
 
 ## Future Improvements
 
-- Improve the examination interface.
-- Add more result analysis features.
-- Improve application performance.
-- Add more features for students and administrators.
+- Add more examination features.
+- Improve the user interface.
+- Add more detailed result analysis.
+- Improve the overall performance.
 
 ## Developed By
 
 **SPIRIT**
 
-MERN Stack Online Examination System
+MERN Full Stack Online Examination System
