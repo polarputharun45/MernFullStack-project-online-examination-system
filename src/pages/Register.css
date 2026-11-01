@@ -1,0 +1,242 @@
+
+.register-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 30px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #fff4c2, #ffe7a3);
+}
+
+/* Wider content container */
+.register-container {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+/* Wide white card */
+.register-page .register-card {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 85px;
+  border: none;
+  border-radius: 24px;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+/* Header */
+.register-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.register-logo {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  border-radius: 16px;
+  background: #f4b400;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.register-header h1 {
+  margin: 0 0 12px;
+  color: #242424;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.register-header p {
+  margin: 0;
+  color: #777777;
+  font-size: 18px;
+}
+
+/* Form fields */
+.register-field {
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.register-field label {
+  display: block;
+  margin-bottom: 10px;
+  color: #333333;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.register-field .form-control,
+.register-field .form-select {
+  display: block;
+  width: 100%;
+  min-height: 62px;
+  padding: 13px 18px;
+  border: 1px solid #d7d7d7;
+  border-radius: 11px;
+  background-color: #ffffff;
+  font-size: 19px;
+  box-sizing: border-box;
+}
+
+.register-field .form-control::placeholder {
+  color: #777777;
+  font-size: 18px;
+  opacity: 1;
+}
+
+.register-field .form-control:focus,
+.register-field .form-select:focus {
+  border-color: #e5a900;
+  box-shadow: 0 0 0 3px rgba(244, 180, 0, 0.15);
+}
+
+/* Submit button */
+.register-submit {
+  width: 100%;
+  min-height: 62px;
+  margin-top: 5px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 11px;
+  background: #f4b400;
+  color: #222222;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.register-submit:hover {
+  background: #e5a900;
+}
+
+.register-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Feedback messages */
+.register-card .alert {
+  margin-bottom: 22px;
+  font-size: 16px;
+}
+
+/* Bottom links */
+.register-login {
+  margin: 30px 0 0;
+  text-align: center;
+  color: #666666;
+  font-size: 17px;
+}
+
+.register-home {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.register-login a,
+.register-home a {
+  color: #a87900;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-login a:hover,
+.register-home a:hover {
+  text-decoration: underline;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .register-page .register-card {
+    max-width: 760px;
+    padding: 40px 45px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .register-page {
+    padding: 16px 10px;
+  }
+
+  .register-page .register-card {
+    width: 100%;
+    max-width: none;
+    padding: 28px 20px;
+    border-radius: 18px;
+  }
+
+  .register-header h1 {
+    font-size: 30px;
+  }
+
+  .register-header p {
+    font-size: 16px;
+  }
+
+  .register-field label {
+    font-size: 16px;
+  }
+
+  .register-field .form-control,
+  .register-field .form-select {
+    min-height: 54px;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .register-field .form-control::placeholder {
+    font-size: 15px;
+  }
+
+  .register-submit {
+    min-height: 54px;
+    font-size: 18px;
+  }
+}
+
+/* Extend registration content left and right */
+.register-page .register-container {
+  width: 100% !important;
+  max-width: 1450px !important;
+  padding: 0 15px !important;
+  margin: 0 auto !important;
+  box-sizing: border-box !important;
+}
+
+.register-page .register-card {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 50px 100px !important;
+  box-sizing: border-box !important;
+}
+
+/* Make input fields fill the extended card */
+.register-page .register-field,
+.register-page .register-field .form-control,
+.register-page .register-field .form-select,
+.register-page .register-submit {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Mobile adjustment */
+@media (max-width: 600px) {
+  .register-page .register-card {
+    max-width: 100% !important;
+    padding: 28px 20px !important;
+  }
+}

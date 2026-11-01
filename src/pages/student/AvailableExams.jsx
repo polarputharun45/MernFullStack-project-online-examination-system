@@ -1,326 +1,320 @@
+
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import "./AvailableExams.css";
+
+const API_URL = "http://localhost:5000/api/exams";
 
 const AvailableExams = () => {
-  const exams = [
-    {
-      id: 1,
-      name: "Full Stack Development",
-      subject: "MERN Stack",
-      description:
-        "Test your knowledge of HTML, CSS, JavaScript, React, Node.js and MongoDB.",
-      questions: 30,
-      duration: "60 Minutes",
-      difficulty: "Intermediate",
-    },
-    {
-      id: 2,
-      name: "Java Programming",
-      subject: "Java",
-      description:
-        "Evaluate your knowledge of Java programming, OOP concepts, collections and exception handling.",
-      questions: 25,
-      duration: "45 Minutes",
-      difficulty: "Intermediate",
-    },
-    {
-      id: 3,
-      name: "Database Management",
-      subject: "DBMS & SQL",
-      description:
-        "Test your understanding of databases, SQL queries, normalization and database concepts.",
-      questions: 20,
-      duration: "30 Minutes",
-      difficulty: "Beginner",
-    },
-    {
-      id: 4,
-      name: "Data Structures",
-      subject: "DSA",
-      description:
-        "Practice arrays, linked lists, stacks, queues, trees, graphs and algorithms.",
-      questions: 30,
-      duration: "60 Minutes",
-      difficulty: "Advanced",
-    },
-    {
-      id: 5,
-      name: "Computer Networks",
-      subject: "Networking",
-      description:
-        "Evaluate your understanding of networking protocols, TCP/IP, OSI model and network security.",
-      questions: 25,
-      duration: "45 Minutes",
-      difficulty: "Intermediate",
-    },
-    {
-      id: 6,
-      name: "Python Programming",
-      subject: "Python",
-      description:
-        "Test your Python programming skills including functions, OOP, modules and data structures.",
-      questions: 25,
-      duration: "45 Minutes",
-      difficulty: "Intermediate",
-    },
-  ];
+  const [exams, setExams] = useState([]);
+  const [search, setSearch] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("All Subjects");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchExams = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const token = localStorage.getItem("examproToken");
+
+        if (!token) {
+          throw new Error("Please log in to view available exams.");
+        }
+
+        const response = await fetch(API_URL, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Unable to fetch exams.");
+        }
+
+        setExams(
+          (Array.isArray(data.exams) ? data.exams : []).filter(
+            (exam) => exam.isActive !== false
+          )
+        );
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error("Fetch Exams Error:", err);
+          setError(err.message || "Unable to connect to the server.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchExams();
+
+    return () => controller.abort();
+  }, []);
+
+  const subjects = useMemo(
+    () => [
+      "All Subjects",
+      ...new Set(exams.map((exam) => exam.subject).filter(Boolean)),
+    ],
+    [exams]
+  );
+
+  const filteredExams = useMemo(() => {
+    return exams.filter((exam) => {
+      const text = `${exam.title || ""} ${exam.subject || ""} ${
+        exam.description || ""
+      }`.toLowerCase();
+
+      const matchesSearch = text.includes(search.toLowerCase().trim());
+
+      const matchesSubject =
+        subjectFilter === "All Subjects" ||
+        exam.subject === subjectFilter;
+
+      return matchesSearch && matchesSubject;
+    });
+  }, [exams, search, subjectFilter]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("examproToken");
+    localStorage.removeItem("examproUser");
+    window.location.href = "/login";
+  };
 
   return (
     <div className="available-exams-page">
-
-      {/* ================= NAVBAR ================= */}
-
-      <nav className="dashboard-navbar">
-        <div className="dashboard-container">
-
-          <Link
-            to="/student/dashboard"
-            className="dashboard-logo"
-          >
+      <nav className="available-navbar">
+        <div className="available-navbar-inner">
+          <Link to="/student/dashboard" className="available-logo">
             ExamPro
           </Link>
 
-          <div className="dashboard-nav-links">
-
-            <Link to="/student/dashboard">
-              Dashboard
-            </Link>
+          <div className="available-nav-links">
+            <Link to="/student/dashboard">Dashboard</Link>
 
             <Link
               to="/student/exams"
-              className="active-nav-link"
+              className="available-nav-active"
             >
               Available Exams
             </Link>
 
-            <a href="/student/dashboard#results">
-              My Results
-            </a>
-
-            <a href="/student/dashboard#profile">
-              Profile
-            </a>
+            <Link to="/student/results">My Results</Link>
 
             <button
-              className="logout-btn"
-              onClick={() => {
-                window.localStorage.removeItem("examproUser");
-                window.location.href = "/login";
-              }}
+              type="button"
+              className="available-logout-btn"
+              onClick={handleLogout}
             >
               Logout
             </button>
-
           </div>
-
         </div>
       </nav>
 
-      {/* ================= MAIN CONTENT ================= */}
-
-      <main className="dashboard-container">
-
-        {/* PAGE HEADER */}
-
-        <section className="exams-page-header">
-
+      <main className="available-main">
+        <header className="available-page-header">
           <div>
-
-            <p className="dashboard-label">
-              EXAMINATION PORTAL
-            </p>
-
-            <h1>
-              Available Exams
-            </h1>
-
-            <p>
+            <p className="available-eyebrow">EXAMINATION PORTAL</p>
+            <h1>Available Exams</h1>
+            <p className="available-subtitle">
               Choose an examination and test your knowledge.
             </p>
-
           </div>
 
-          <div className="total-exams-box">
-
-            <strong>
-              {exams.length}
-            </strong>
-
-            <span>
+          <div className="available-total-card">
+            <span className="available-total-number">
+              {loading ? "—" : filteredExams.length}
+            </span>
+            <span className="available-total-label">
               Available Exams
             </span>
-
           </div>
+        </header>
 
-        </section>
-
-        {/* SEARCH */}
-
-        <section className="exam-search-section">
-
-          <div className="exam-search-box">
-
-            <span>
-              🔍
-            </span>
-
+        <section className="available-search-panel">
+          <label className="available-search-box">
+            <span aria-hidden="true">⌕</span>
             <input
-              type="text"
-              placeholder="Search exams..."
+              type="search"
+              placeholder="Search by exam name, subject..."
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              aria-label="Search exams"
             />
+          </label>
 
-          </div>
-
-          <select className="exam-filter">
-
-            <option>
-              All Subjects
-            </option>
-
-            <option>
-              MERN Stack
-            </option>
-
-            <option>
-              Java
-            </option>
-
-            <option>
-              DBMS & SQL
-            </option>
-
-            <option>
-              DSA
-            </option>
-
-            <option>
-              Networking
-            </option>
-
-            <option>
-              Python
-            </option>
-
-          </select>
-
-        </section>
-
-        {/* EXAM CARDS */}
-
-        <section className="available-exam-grid">
-
-          {exams.map((exam) => (
-
-            <div
-              className="available-exam-card"
-              key={exam.id}
+          <label className="available-filter-box">
+            <span>Filter by subject</span>
+            <select
+              value={subjectFilter}
+              onChange={(event) => setSubjectFilter(event.target.value)}
+              aria-label="Filter by subject"
             >
-
-              {/* CARD HEADER */}
-
-              <div className="available-exam-card-header">
-
-                <span className="exam-subject">
-                  {exam.subject}
-                </span>
-
-                <span className="available-badge">
-                  Available
-                </span>
-
-              </div>
-
-              {/* EXAM NAME */}
-
-              <h2>
-                {exam.name}
-              </h2>
-
-              {/* DESCRIPTION */}
-
-              <p className="exam-description">
-                {exam.description}
-              </p>
-
-              {/* EXAM INFORMATION */}
-
-              <div className="exam-info-grid">
-
-                <div>
-
-                  <span className="exam-info-label">
-                    Questions
-                  </span>
-
-                  <strong>
-                    {exam.questions}
-                  </strong>
-
-                </div>
-
-                <div>
-
-                  <span className="exam-info-label">
-                    Duration
-                  </span>
-
-                  <strong>
-                    {exam.duration}
-                  </strong>
-
-                </div>
-
-                <div>
-
-                  <span className="exam-info-label">
-                    Difficulty
-                  </span>
-
-                  <strong>
-                    {exam.difficulty}
-                  </strong>
-
-                </div>
-
-              </div>
-
-              {/* BUTTONS */}
-
-              <div className="exam-card-buttons">
-
-                <Link
-                  to={`/student/instructions/${exam.id}`}
-                  className="instructions-btn"
-                >
-                  Instructions
-                </Link>
-
-                <Link
-                  to={`/student/instructions/${exam.id}`}
-                  className="start-exam-btn"
-                >
-                  Start Exam
-                </Link>
-
-              </div>
-
-            </div>
-
-          ))}
-
+              {subjects.map((subject) => (
+                <option key={subject} value={subject}>
+                  {subject}
+                </option>
+              ))}
+            </select>
+          </label>
         </section>
 
+        {loading && (
+          <div className="available-message">
+            <div className="available-spinner" />
+            <h2>Loading examinations</h2>
+            <p>Please wait while we fetch available exams.</p>
+          </div>
+        )}
+
+        {!loading && error && (
+          <div className="available-message available-error" role="alert">
+            <h2>Unable to load exams</h2>
+            <p>{error}</p>
+            <button
+              type="button"
+              className="available-primary-btn"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && filteredExams.length > 0 && (
+          <section className="available-exam-grid">
+            {filteredExams.map((exam) => (
+              <article className="available-exam-card" key={exam._id}>
+                <div className="available-card-top">
+                  <span className="available-subject-badge">
+                    {exam.subject || "General"}
+                  </span>
+
+                  <span
+                    className={
+                      exam.isCompleted
+                        ? "available-status-badge completed-status"
+                        : "available-status-badge"
+                    }
+                  >
+                    <span className="available-status-dot" />
+                    {exam.isCompleted ? "Completed" : "Available"}
+                  </span>
+                </div>
+
+                <h2>{exam.title || "Untitled Examination"}</h2>
+
+                <p className="available-exam-description">
+                  {exam.description ||
+                    "No description available for this examination."}
+                </p>
+
+                <div className="available-exam-divider" />
+
+                <div className="available-exam-info">
+                  <div className="available-info-item">
+                    <span className="available-info-icon">📝</span>
+                    <div>
+                      <span className="available-info-label">Questions</span>
+                      <strong>{Number(exam.totalQuestions || 0)}</strong>
+                    </div>
+                  </div>
+
+                  <div className="available-info-item">
+                    <span className="available-info-icon">⏱️</span>
+                    <div>
+                      <span className="available-info-label">Duration</span>
+                      <strong>{Number(exam.duration || 0)} Minutes</strong>
+                    </div>
+                  </div>
+
+                  <div className="available-info-item">
+                    <span className="available-info-icon">📊</span>
+                    <div>
+                      <span className="available-info-label">Difficulty</span>
+                      <strong>{exam.difficulty || "Beginner"}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="available-card-actions">
+                  {exam.isCompleted ? (
+                    <div className="available-completed-btn">
+                      ✓ Completed
+                      <span className="available-attempt-count">
+                        {exam.attemptsUsed}/{exam.maxAttempts} attempts used
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      <Link
+                        to={`/student/instructions/${exam._id}`}
+                        className="available-instructions-btn"
+                      >
+                        View Instructions
+                      </Link>
+
+                      <Link
+                        to={`/student/instructions/${exam._id}`}
+                        className="available-start-btn"
+                      >
+                        {exam.hasAttempted
+                          ? "Start Remaining Attempt"
+                          : "Start Examination"}{" "}
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </article>
+            ))}
+          </section>
+        )}
+
+        {!loading && !error && filteredExams.length === 0 && (
+          <div className="available-message">
+            <span className="available-empty-icon">📚</span>
+            <h2>
+              {exams.length === 0
+                ? "No Active Examinations"
+                : "No Matching Exams"}
+            </h2>
+            <p>
+              {exams.length === 0
+                ? "There are no active exams available right now."
+                : "Try a different search term or select another subject."}
+            </p>
+
+            {(search || subjectFilter !== "All Subjects") && (
+              <button
+                type="button"
+                className="available-primary-btn"
+                onClick={() => {
+                  setSearch("");
+                  setSubjectFilter("All Subjects");
+                }}
+              >
+                Clear Filters
+              </button>
+            )}
+          </div>
+        )}
       </main>
 
-      {/* FOOTER */}
-
-      <footer className="dashboard-footer">
-
-        <p>
-          © 2026 ExamPro. Online Examination System.
-        </p>
-
+      <footer className="available-footer">
+        <p>© 2026 ExamPro. Online Examination System.</p>
       </footer>
-
     </div>
   );
 };

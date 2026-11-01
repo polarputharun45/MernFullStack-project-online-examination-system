@@ -1,31 +1,38 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import axios from "axios";
+import "./Register.css";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    role: "student",
+    branch: "",
   });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
 
     setError("");
+    setSuccess("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const {
@@ -33,17 +40,24 @@ const Register = () => {
       email,
       password,
       confirmPassword,
+      role,
+      branch,
     } = formData;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (
+      !name.trim() ||
+      !email.trim() ||
+      !password ||
+      !confirmPassword ||
+      !role ||
+      !branch
+    ) {
       setError("Please fill in all fields.");
       return;
     }
 
     if (password.length < 6) {
-      setError(
-        "Password must contain at least 6 characters."
-      );
+      setError("Password must contain at least 6 characters.");
       return;
     }
 
@@ -52,153 +66,199 @@ const Register = () => {
       return;
     }
 
-    const result = register(
-      name,
-      email,
-      password
-    );
+    try {
+      setLoading(true);
+      setError("");
+      setSuccess("");
 
-    if (!result.success) {
-      setError(result.message);
-      return;
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        {
+          name: name.trim(),
+          email: email.trim(),
+          password,
+          role,
+          branch,
+        }
+      );
+
+      if (response.data?.success) {
+        setSuccess(
+          "Registration successful! Redirecting to login..."
+        );
+
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          role: "student",
+          branch: "",
+        });
+
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      } else {
+        setError(
+          response.data?.message || "Registration failed."
+        );
+      }
+    } catch (err) {
+      console.error("Registration Error:", err);
+
+      setError(
+        err.response?.data?.message ||
+          "Unable to connect to the server. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    setSuccess(result.message);
-
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
-
-    setTimeout(() => {
-      navigate("/login");
-    }, 1500);
   };
 
   return (
-    <div className="auth-page">
-      <div className="container">
-        <div className="row justify-content-center align-items-center min-vh-100">
+    <main className="auth-page register-page">
+      <div className="register-container">
+        <section className="card border-0 shadow-lg register-card">
+          <header className="register-header">
+            <div className="register-logo">E</div>
+            <h1>Create Account</h1>
+            <p>Join ExamPro today</p>
+          </header>
 
-          <div className="col-md-7 col-lg-5">
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
 
-            <div className="card border-0 shadow-lg p-4">
+          {success && (
+            <div className="alert alert-success" role="status">
+              {success}
+            </div>
+          )}
 
-              <div className="text-center mb-4">
-                <h2 className="fw-bold text-primary">
-                  Create Account
-                </h2>
-
-                <p className="text-secondary">
-                  Join ExamPro today
-                </p>
-              </div>
-
-              {error && (
-                <div className="alert alert-danger">
-                  {error}
-                </div>
-              )}
-
-              {success && (
-                <div className="alert alert-success">
-                  {success}
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit}>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Full Name
-                  </label>
-
-                  <input
-                    type="text"
-                    name="name"
-                    className="form-control"
-                    placeholder="Enter your full name"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Email
-                  </label>
-
-                  <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Password
-                  </label>
-
-                  <input
-                    type="password"
-                    name="password"
-                    className="form-control"
-                    placeholder="Create a password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Confirm Password
-                  </label>
-
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    className="form-control"
-                    placeholder="Confirm your password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 py-2"
-                >
-                  Register
-                </button>
-
-              </form>
-
-              <p className="text-center mt-4 mb-0">
-                Already have an account?{" "}
-                <Link to="/login">
-                  Login
-                </Link>
-              </p>
-
-              <div className="text-center mt-3">
-                <Link to="/" className="text-secondary">
-                  ← Back to Home
-                </Link>
-              </div>
-
+          <form onSubmit={handleSubmit}>
+            <div className="register-field">
+              <label htmlFor="register-name">Full Name</label>
+              <input
+                id="register-name"
+                type="text"
+                name="name"
+                className="form-control"
+                placeholder="Enter your full name"
+                autoComplete="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
 
-          </div>
+            <div className="register-field">
+              <label htmlFor="register-email">Email Address</label>
+              <input
+                id="register-email"
+                type="email"
+                name="email"
+                className="form-control"
+                placeholder="Enter your email"
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-        </div>
+            <div className="register-field">
+              <label htmlFor="register-password">Password</label>
+              <input
+                id="register-password"
+                type="password"
+                name="password"
+                className="form-control"
+                placeholder="Create a password"
+                autoComplete="new-password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength={6}
+              />
+            </div>
+
+            <div className="register-field">
+              <label htmlFor="register-confirm-password">
+                Confirm Password
+              </label>
+              <input
+                id="register-confirm-password"
+                type="password"
+                name="confirmPassword"
+                className="form-control"
+                placeholder="Confirm your password"
+                autoComplete="new-password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="register-field">
+              <label htmlFor="register-role">Register As</label>
+              <select
+                id="register-role"
+                name="role"
+                className="form-select"
+                value={formData.role}
+                onChange={handleChange}
+                required
+              >
+                <option value="student">Student</option>
+                <option value="admin">Teacher</option>
+              </select>
+            </div>
+
+            <div className="register-field">
+              <label htmlFor="register-branch">
+                Select Branch
+              </label>
+              <select
+                id="register-branch"
+                name="branch"
+                className="form-select"
+                value={formData.branch}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select your branch</option>
+                <option value="CSE">
+                  CSE - Computer Science Engineering
+                </option>
+                <option value="ECE">
+                  ECE - Electronics and Communication Engineering
+                </option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="register-submit"
+              disabled={loading}
+            >
+              {loading ? "Creating Account..." : "Create Account"}
+            </button>
+          </form>
+
+          <p className="register-login">
+            Already have an account?{" "}
+            <Link to="/login">Login</Link>
+          </p>
+
+          <div className="register-home">
+            <Link to="/">← Back to Home</Link>
+          </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 };
 

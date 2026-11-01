@@ -1,0 +1,164 @@
+/* My Results page background */
+.results-page {
+  background: #fffde7 !important;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Main results section */
+.results-container {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto;
+  padding: 35px 4% !important;
+  box-sizing: border-box;
+  background: #fffde7 !important;
+}
+
+/* Header text */
+.results-page-header h1 {
+  font-size: 36px !important;
+  color: #222 !important;
+}
+
+.results-page-header p {
+  color: #665c40;
+}
+
+/* Summary cards */
+.result-summary-card {
+  background: #ffffff !important;
+  border: 1px solid #ffe08a !important;
+  border-radius: 12px;
+}
+
+/* Examination history section */
+.results-table-section {
+  background: transparent !important;
+  width: 100%;
+}
+
+.results-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #ffe08a;
+}
+
+.results-table {
+  width: 100%;
+  background: #ffffff;
+  border-collapse: collapse;
+}
+
+.results-table thead {
+  background: #fff0a6 !important;
+}
+
+.results-table th {
+  background: #fff0a6 !important;
+  color: #684000;
+  padding: 16px;
+}
+
+.results-table td {
+  padding: 16px;
+  border-bottom: 1px solid #ffedc2;
+}
+
+/* Take another exam button */
+.results-page-actions .start-exam-btn {
+  background: #ffcc00 !important;
+  color: #222 !important;
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 14px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.results-page-actions .start-exam-btn:hover {
+  background: #ffb300 !important;
+}
+
+/* Footer */
+.dashboard-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #ffe08a;
+  text-align: center;
+}
+/* Remove red background from My Results page */
+.results-page {
+  background: #fffde7 !important;
+  min-height: 100vh;
+}
+
+/* Main content background */
+.results-container {
+  background: #fffde7 !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+  padding: 35px 4% !important;
+  box-sizing: border-box;
+}
+
+/* Header */
+.results-page-header h1 {
+  color: #222 !important;
+}
+
+.results-page-header p {
+  color: #75684b !important;
+}
+
+/* Summary cards */
+.result-summary-card {
+  background: #ffffff !important;
+  border: 1px solid #ffe08a !important;
+  box-shadow: 0 4px 12px rgba(120, 90, 0, 0.06);
+}
+
+/* Examination history */
+.results-table-section {
+  background: transparent !important;
+}
+
+.results-table-wrapper {
+  background: #ffffff !important;
+  border: 1px solid #ffe08a !important;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.results-table {
+  background: #ffffff !important;
+}
+
+.results-table thead th {
+  background: #fff0a6 !important;
+  color: #684000 !important;
+}
+
+.results-table tbody td {
+  background: #ffffff !important;
+  border-bottom: 1px solid #ffedc2 !important;
+}
+
+/* Take Another Exam button */
+.results-page-actions .start-exam-btn {
+  background: #ffcc00 !important;
+  color: #222 !important;
+}
+
+.results-page-actions .start-exam-btn:hover {
+  background: #ffb300 !important;
+}
+
+/* Footer */
+.dashboard-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #ffe08a !important;
+}

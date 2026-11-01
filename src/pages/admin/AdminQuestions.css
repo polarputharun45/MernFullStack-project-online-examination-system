@@ -1,0 +1,323 @@
+
+/* ===== Larger Questions Page Layout ===== */
+
+.questions-page,
+.manage-questions-page {
+  width: 100%;
+  max-width: 100%;
+  padding: 30px 28px;
+  box-sizing: border-box;
+}
+
+/* Page heading */
+.questions-page h1,
+.manage-questions-page h1 {
+  font-size: 36px;
+  font-weight: 800;
+}
+
+/* Question cards */
+.question-card,
+.questions-page .card,
+.manage-questions-page .card {
+  width: 100%;
+  padding: 28px !important;
+  margin-bottom: 22px;
+  border-radius: 16px;
+  border: 1px solid #fed7aa;
+  background: #ffffff;
+  box-shadow: 0 5px 18px rgba(80, 50, 10, 0.07);
+  box-sizing: border-box;
+}
+
+/* Question text */
+.question-card h3,
+.question-card h4,
+.questions-page .card h3,
+.questions-page .card h4,
+.manage-questions-page .card h3,
+.manage-questions-page .card h4 {
+  font-size: 22px;
+  line-height: 1.6;
+  font-weight: 700;
+}
+
+/* Options */
+.question-option,
+.option-item {
+  padding: 16px 18px;
+  font-size: 17px;
+  line-height: 1.6;
+  border-radius: 10px;
+}
+
+/* Buttons */
+.questions-page button,
+.manage-questions-page button {
+  min-height: 42px;
+  padding: 10px 18px;
+  font-size: 15px;
+  border-radius: 9px;
+}
+
+/* Search input */
+.questions-page input,
+.manage-questions-page input {
+  min-height: 48px;
+  font-size: 16px;
+  padding: 12px 16px;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .questions-page,
+  .manage-questions-page {
+    padding: 20px 12px;
+  }
+
+  .question-card,
+  .questions-page .card,
+  .manage-questions-page .card {
+    padding: 18px !important;
+  }
+
+  .questions-page h1,
+  .manage-questions-page h1 {
+    font-size: 28px;
+  }
+}
+
+/* Make question cards more readable */
+.admin-questions-page .question-card,
+.admin-questions .question-card {
+  padding: 30px !important;
+}
+
+/* Increase question text */
+.admin-questions-page .question-text,
+.admin-questions .question-text {
+  font-size: 22px !important;
+  line-height: 1.6 !important;
+  font-weight: 700 !important;
+}
+
+/* Increase option boxes and text */
+.admin-questions-page .question-option,
+.admin-questions .question-option,
+.admin-questions-page .option-item,
+.admin-questions .option-item {
+  min-height: 54px !important;
+  padding: 15px 18px !important;
+  font-size: 17px !important;
+  line-height: 1.5 !important;
+  border-radius: 10px !important;
+}
+
+/* Increase option labels like A, B, C, D */
+.admin-questions-page .question-option strong,
+.admin-questions .question-option strong,
+.admin-questions-page .option-item strong,
+.admin-questions .option-item strong {
+  font-size: 17px !important;
+}
+
+/* Better spacing between options */
+.admin-questions-page .options-grid,
+.admin-questions .options-grid {
+  gap: 12px !important;
+}
+
+/* Larger Edit and Delete buttons */
+.admin-questions-page button,
+.admin-questions button {
+  min-height: 42px !important;
+  padding: 10px 18px !important;
+  font-size: 15px !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .admin-questions-page .question-option,
+  .admin-questions .question-option,
+  .admin-questions-page .option-item,
+  .admin-questions .option-item {
+    font-size: 16px !important;
+    padding: 13px !important;
+  }
+}
+
+/* FORCE BIGGER QUESTION CONTENT */
+.admin-questions-page *,
+.admin-questions * {
+  font-size: 18px !important;
+}
+
+/* Bigger question cards */
+.admin-questions-page .card,
+.admin-questions .card,
+.admin-questions-page [class*="question"],
+.admin-questions [class*="question"] {
+  padding: 24px !important;
+  border-radius: 14px !important;
+}
+
+/* Bigger option boxes */
+.admin-questions-page [class*="option"],
+.admin-questions [class*="option"] {
+  min-height: 60px !important;
+  padding: 18px 20px !important;
+  font-size: 19px !important;
+  line-height: 1.6 !important;
+}
+
+/* Bigger question headings */
+.admin-questions-page h1,
+.admin-questions h1 {
+  font-size: 36px !important;
+}
+
+.admin-questions-page h2,
+.admin-questions h2,
+.admin-questions-page h3,
+.admin-questions h3 {
+  font-size: 24px !important;
+}
+
+/* Bigger buttons */
+.admin-questions-page button,
+.admin-questions button {
+  min-height: 44px !important;
+  padding: 10px 18px !important;
+  font-size: 16px !important;
+}
+
+/* ===== FIX: ACTUAL QUESTION OPTION CLASSES ===== */
+
+/* Make question cards more spacious */
+.admin-page .admin-question-card {
+  width: 100% !important;
+  padding: 30px !important;
+  margin-bottom: 24px !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+}
+
+/* Question heading */
+.admin-page .admin-question-header h3 {
+  font-size: 23px !important;
+  line-height: 1.6 !important;
+  font-weight: 700 !important;
+  margin-top: 16px !important;
+  margin-bottom: 22px !important;
+}
+
+/* Options layout */
+.admin-page .admin-question-options {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin-top: 22px !important;
+  margin-bottom: 20px !important;
+}
+
+/* Each option box */
+.admin-page .admin-question-options > div {
+  min-height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 16px 20px !important;
+  background: #fffaf1 !important;
+  border: 1px solid #fed7aa !important;
+  border-radius: 11px !important;
+  color: #292929 !important;
+  font-size: 19px !important;
+  line-height: 1.6 !important;
+  overflow-wrap: anywhere !important;
+  box-sizing: border-box !important;
+}
+
+/* Option letters A, B, C, D */
+.admin-page .admin-question-options > div strong {
+  flex-shrink: 0 !important;
+  margin-right: 9px !important;
+  color: #ea580c !important;
+  font-size: 19px !important;
+  font-weight: 800 !important;
+}
+
+/* Exam name badge */
+.admin-page .subject-badge {
+  font-size: 13px !important;
+  padding: 7px 12px !important;
+}
+
+/* Correct answer */
+.admin-page .correct-answer {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+
+/* Edit and Delete buttons */
+.admin-page .admin-question-actions button {
+  min-height: 44px !important;
+  padding: 11px 20px !important;
+  font-size: 16px !important;
+  border-radius: 9px !important;
+}
+
+/* Mobile screen */
+@media (max-width: 650px) {
+  .admin-page .admin-question-card {
+    padding: 18px !important;
+  }
+
+  .admin-page .admin-question-options {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .admin-page .admin-question-options > div {
+    min-height: 54px !important;
+    padding: 14px !important;
+    font-size: 17px !important;
+  }
+
+  .admin-page .admin-question-header h3 {
+    font-size: 20px !important;
+  }
+}
+
+/* Yellow background for Questions page */
+.admin-page {
+  background: #fff4c2 !important;
+  min-height: 100vh;
+}
+
+/* Light yellow background for question options */
+.admin-page .admin-question-options > div {
+  background: #fff9e6 !important;
+  border: 1px solid #f5cf70 !important;
+}
+
+/* Yellow background for question cards */
+.admin-page .admin-question-card {
+  background: #ffffff !important;
+  border: 1px solid #f5cf70 !important;
+}
+
+/* Yellow search box */
+.admin-page .admin-search {
+  background: #fffdf5 !important;
+  border-color: #f5cf70 !important;
+}
+
+/* Yellow Add Question button */
+.admin-page .admin-primary-btn {
+  background: #fbbf24 !important;
+  border-color: #fbbf24 !important;
+  color: #422006 !important;
+}
+
+.admin-page .admin-primary-btn:hover {
+  background: #f59e0b !important;
+}

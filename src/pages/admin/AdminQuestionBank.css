@@ -1,0 +1,423 @@
+
+/* ==========================================
+   EXAMPRO QUESTION BANK PAGE - YELLOW THEME
+========================================== */
+
+.question-bank-page {
+  min-height: 100vh;
+  padding: 35px 5%;
+  background: #fffdf5;
+  color: #1e293b;
+  font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+
+.qb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 30px;
+  background: linear-gradient(135deg, #d99b00, #f5c542);
+  border-radius: 16px;
+  color: #382900;
+  box-shadow: 0 8px 25px rgba(217, 155, 0, 0.12);
+}
+
+.qb-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #674900;
+  margin-bottom: 10px;
+}
+
+.qb-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.qb-header p {
+  font-size: 14px;
+  color: #594315;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.qb-header-icon {
+  width: 75px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  font-size: 25px;
+  font-weight: 800;
+  color: #594000;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* COMMON CARD */
+
+.qb-card {
+  background: #ffffff;
+  border: 1px solid #f1dfaa;
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.04);
+}
+
+.qb-section-heading {
+  margin-bottom: 22px;
+}
+
+.qb-section-heading h2 {
+  font-size: 21px;
+  font-weight: 700;
+  color: #795600;
+  margin: 0 0 8px;
+}
+
+.qb-section-heading p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ALERT MESSAGES */
+
+.qb-alert {
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.qb-success {
+  color: #166534;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+}
+
+.qb-error {
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+}
+
+/* PDF UPLOAD AREA */
+
+.qb-upload-area {
+  min-height: 220px;
+  padding: 30px 20px;
+  border: 2px dashed #e5bd43;
+  border-radius: 12px;
+  background: #fffaf0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.qb-upload-icon {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff0b8;
+  color: #946600;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.qb-upload-area h3 {
+  font-size: 17px;
+  color: #1e293b;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.qb-upload-area p {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+.qb-upload-area input[type="file"] {
+  max-width: 100%;
+  font-size: 13px;
+  color: #475569;
+}
+
+.qb-file-name {
+  margin-top: 15px;
+  font-weight: 600;
+  color: #946600 !important;
+  overflow-wrap: anywhere;
+}
+
+/* BUTTONS */
+
+.qb-primary-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 45px;
+  padding: 12px 24px;
+  background: linear-gradient(120deg, #d99b00, #f0bd35);
+  color: #382900;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.qb-primary-btn:hover:not(:disabled) {
+  background: #c78d00;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.qb-primary-btn:disabled {
+  background: #e5d5a6;
+  color: #796b49;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.qb-delete-btn {
+  padding: 8px 13px;
+  color: #dc2626;
+  background: #fee2e2;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.qb-delete-btn:hover {
+  background: #fecaca;
+}
+
+.qb-approve-btn {
+  padding: 10px 17px;
+  background: #15803d;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.qb-approve-btn:hover {
+  background: #166534;
+}
+
+/* QUESTION COUNT */
+
+.qb-count {
+  display: inline-block;
+  padding: 9px 15px;
+  margin-bottom: 20px;
+  border-radius: 7px;
+  background: #fff0b8;
+  color: #805900;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* QUESTION PREVIEW CARD */
+
+.qb-question-card {
+  padding: 22px;
+  margin-bottom: 20px;
+  background: #fffefa;
+  border: 1px solid #eee3c3;
+  border-radius: 11px;
+}
+
+.qb-question-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.qb-question-top h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #946600;
+  margin: 0;
+}
+
+.qb-question-card > label {
+  display: block;
+  margin: 15px 0 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.qb-question-card textarea,
+.qb-question-card input,
+.qb-question-card select {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #e5d5a6;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #1e293b;
+  font-size: 13px;
+  outline: none;
+}
+
+.qb-question-card textarea {
+  min-height: 75px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.qb-question-card textarea:focus,
+.qb-question-card input:focus,
+.qb-question-card select:focus {
+  border-color: #d99b00;
+  box-shadow: 0 0 0 3px rgba(217, 155, 0, 0.12);
+}
+
+/* FOUR OPTIONS GRID */
+
+.qb-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.qb-options-grid label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+/* SAVED QUESTIONS */
+
+.qb-saved-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px;
+  margin-bottom: 12px;
+  background: #fffefa;
+  border: 1px solid #eee3c3;
+  border-radius: 10px;
+}
+
+.qb-saved-question h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #946600;
+  margin-bottom: 8px;
+}
+
+.qb-saved-question p {
+  font-size: 14px;
+  color: #334155;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.qb-approved,
+.qb-pending {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.qb-approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.qb-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 768px) {
+  .question-bank-page {
+    padding: 20px 4%;
+  }
+
+  .qb-header {
+    padding: 22px;
+  }
+
+  .qb-header h1 {
+    font-size: 25px;
+  }
+
+  .qb-header-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 19px;
+  }
+
+  .qb-card {
+    padding: 20px;
+  }
+
+  .qb-options-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .qb-saved-question {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .qb-primary-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .qb-header {
+    align-items: flex-start;
+  }
+
+  .qb-header-icon {
+    display: none;
+  }
+
+  .qb-question-card {
+    padding: 15px;
+  }
+
+  .qb-question-top h3 {
+    font-size: 14px;
+  }
+}

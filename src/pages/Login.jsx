@@ -1,10 +1,13 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import "./Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { setBackendUser } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -13,163 +16,297 @@ const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  // FORGOT PASSWORD STATES
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotMessage, setForgotMessage] = useState("");
+  const [forgotError, setForgotError] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData((previous) => ({
+      ...previous,
+      [name]: value,
+    }));
 
     setError("");
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // LOGIN FUNCTION
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    if (!formData.email || !formData.password) {
-      setError("Please enter email and password.");
+    if (!formData.email.trim() || !formData.password) {
+      setError("Please enter your email and password.");
       return;
     }
 
-    const result = login(
-      formData.email,
-      formData.password
-    );
+    try {
+      setLoading(true);
+      setError("");
 
-    if (!result.success) {
-      setError(result.message);
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email: formData.email.trim(),
+          password: formData.password,
+        }
+      );
+
+      if (!response.data?.success) {
+        setError("Login failed. Please check your credentials.");
+        return;
+      }
+
+      const { token, user } = response.data;
+
+      if (!token || !user) {
+        setError("Invalid response from server. Please try again.");
+        return;
+      }
+
+      localStorage.setItem("examproToken", token);
+      setBackendUser(user);
+
+      if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/student/dashboard");
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+
+      setError(
+        err.response?.data?.message ||
+          "Unable to connect to the server. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // FORGOT PASSWORD FUNCTION
+  const handleForgotPassword = async (event) => {
+    event.preventDefault();
+
+    setForgotMessage("");
+    setForgotError("");
+
+    if (!forgotEmail.trim()) {
+      setForgotError("Please enter your registered email address.");
       return;
     }
 
-    if (result.user.role === "admin") {
-      navigate("/admin/dashboard");
-    } else {
-      navigate("/student/dashboard");
+    try {
+      setForgotLoading(true);
+
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/forgot-password",
+        {
+          email: forgotEmail.trim(),
+        }
+      );
+
+      if (response.data?.success) {
+        setForgotMessage(response.data.message);
+      } else {
+        setForgotError(
+          response.data?.message || "Unable to process your request."
+        );
+      }
+    } catch (err) {
+      console.error("Forgot Password Error:", err);
+
+      setForgotError(
+        err.response?.data?.message ||
+          "Unable to send reset link. Please try again."
+      );
+    } finally {
+      setForgotLoading(false);
     }
   };
 
   return (
-    <div className="auth-page">
-      <div className="container">
-        <div className="row justify-content-center align-items-center min-vh-100">
+    <main className="auth-page">
+      <section className="login-card login-card-large">
+        <header className="login-header">
+          <div className="login-logo-mark">E</div>
 
-          <div className="col-md-7 col-lg-5">
+          <h1>ExamPro</h1>
+          <h2>Welcome Back!</h2>
 
-            <div className="card border-0 shadow-lg p-4">
+          <p>Login to your account to continue</p>
+        </header>
 
-              <div className="text-center mb-4">
-                <h2 className="fw-bold text-primary">
-                  ExamPro
-                </h2>
+        {error && (
+          <div className="login-error" role="alert">
+            {error}
+          </div>
+        )}
 
-                <p className="text-secondary">
-                  Login to your account
-                </p>
-              </div>
+        <form onSubmit={handleSubmit}>
+          <div className="login-field">
+            <label htmlFor="login-email">Email Address</label>
 
-              {error && (
-                <div className="alert alert-danger">
-                  {error}
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit}>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Email
-                  </label>
-
-                  <input
-                    type="email"
-                    name="email"
-                    className="form-control"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">
-                    Password
-                  </label>
-
-                  <div className="input-group">
-
-                    <input
-                      type={
-                        showPassword ? "text" : "password"
-                      }
-                      name="password"
-                      className="form-control"
-                      placeholder="Enter your password"
-                      value={formData.password}
-                      onChange={handleChange}
-                    />
-
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() =>
-                        setShowPassword(!showPassword)
-                      }
-                    >
-                      {showPassword ? "Hide" : "Show"}
-                    </button>
-
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 py-2"
-                >
-                  Login
-                </button>
-
-              </form>
-
-              <div className="demo-login mt-4">
-
-                <h6 className="fw-bold">
-                  Demo Accounts
-                </h6>
-
-                <div className="small text-secondary">
-                  <strong>Admin:</strong>
-                  <br />
-                  admin@exampro.com / admin123
-                </div>
-
-                <div className="small text-secondary mt-2">
-                  <strong>Student:</strong>
-                  <br />
-                  student@exampro.com / student123
-                </div>
-
-              </div>
-
-              <p className="text-center mt-4 mb-0">
-                Don't have an account?{" "}
-                <Link to="/register">
-                  Register
-                </Link>
-              </p>
-
-              <div className="text-center mt-3">
-                <Link to="/" className="text-secondary">
-                  ← Back to Home
-                </Link>
-              </div>
-
-            </div>
-
+            <input
+              id="login-email"
+              type="email"
+              name="email"
+              autoComplete="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
 
+          <div className="login-field">
+            <label htmlFor="login-password">Password</label>
+
+            <div className="login-password-wrap">
+              <input
+                id="login-password"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                autoComplete="current-password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword((previous) => !previous)}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          {/* FORGOT PASSWORD BUTTON */}
+          <div style={{ textAlign: "right", marginBottom: "18px" }}>
+            <button
+              type="button"
+              onClick={() => {
+                setShowForgotPassword((previous) => !previous);
+                setForgotEmail(formData.email);
+                setForgotMessage("");
+                setForgotError("");
+              }}
+              style={{
+                background: "none",
+                border: "none",
+                color: "#2563eb",
+                cursor: "pointer",
+                fontWeight: "600",
+                padding: 0,
+              }}
+            >
+              Forgot Password?
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            className="login-submit"
+            disabled={loading}
+          >
+            {loading ? "Signing in..." : "Login to ExamPro"}
+          </button>
+        </form>
+
+        {/* FORGOT PASSWORD FORM */}
+        {showForgotPassword && (
+          <div
+            style={{
+              marginTop: "22px",
+              padding: "20px",
+              border: "1px solid #ddd",
+              borderRadius: "10px",
+              background: "#fff",
+            }}
+          >
+            <h4>Forgot Your Password?</h4>
+
+            <p>
+              Enter your registered email address. We'll send you a
+              password reset link.
+            </p>
+
+            {forgotMessage && (
+              <div className="alert alert-success">
+                {forgotMessage}
+              </div>
+            )}
+
+            {forgotError && (
+              <div className="alert alert-danger">
+                {forgotError}
+              </div>
+            )}
+
+            <form onSubmit={handleForgotPassword}>
+              <div className="login-field">
+                <label htmlFor="forgot-email">Email Address</label>
+
+                <input
+                  id="forgot-email"
+                  type="email"
+                  placeholder="Enter your registered email"
+                  value={forgotEmail}
+                  onChange={(event) => {
+                    setForgotEmail(event.target.value);
+                    setForgotError("");
+                  }}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="login-submit"
+                disabled={forgotLoading}
+              >
+                {forgotLoading ? "Sending..." : "Send Reset Link"}
+              </button>
+            </form>
+
+            <button
+              type="button"
+              onClick={() => {
+                setShowForgotPassword(false);
+                setForgotMessage("");
+                setForgotError("");
+              }}
+              style={{
+                marginTop: "12px",
+                background: "none",
+                border: "none",
+                color: "#555",
+                cursor: "pointer",
+              }}
+            >
+              Back to Login
+            </button>
+          </div>
+        )}
+
+        <p className="login-register">
+          Don't have an account?{" "}
+          <Link to="/register">Create account</Link>
+        </p>
+
+        <div className="login-home">
+          <Link to="/">← Back to Home</Link>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

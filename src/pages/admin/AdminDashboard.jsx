@@ -1,426 +1,307 @@
+
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
 
-  const statistics = [
+  const [statistics, setStatistics] = useState({
+    totalStudents: 0,
+    totalExams: 0,
+    totalQuestions: 0,
+    totalAttempts: 0,
+  });
+
+  const [recentExams, setRecentExams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const token = localStorage.getItem("examproToken");
+
+        const response = await axios.get(
+          "http://localhost:5000/api/dashboard/stats",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.success) {
+          setStatistics(response.data.statistics);
+          setRecentExams(response.data.recentExams);
+        }
+      } catch (err) {
+        console.error("Dashboard Error:", err);
+        setError(
+          "Unable to load dashboard data. Please check the backend server."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
+  const statCards = [
     {
-      icon: "👨‍🎓",
-      value: "250",
+      code: "ST",
+      value: statistics.totalStudents,
       label: "Total Students",
     },
     {
-      icon: "📝",
-      value: "18",
+      code: "EX",
+      value: statistics.totalExams,
       label: "Total Exams",
     },
     {
-      icon: "❓",
-      value: "420",
+      code: "Q",
+      value: statistics.totalQuestions,
       label: "Total Questions",
     },
     {
-      icon: "📊",
-      value: "1,240",
+      code: "RES",
+      value: statistics.totalAttempts,
       label: "Examinations Taken",
     },
   ];
 
-  const recentExams = [
+  const adminActions = [
     {
-      name: "Full Stack Development",
-      subject: "MERN Stack",
-      students: 85,
-      questions: 30,
-      status: "Active",
+      code: "ST",
+      title: "Manage Students",
+      description: "View registered students.",
+      path: "/admin/students",
     },
     {
-      name: "Java Programming",
-      subject: "Java",
-      students: 72,
-      questions: 25,
-      status: "Active",
+      code: "EX",
+      title: "Manage Exams",
+      description: "Create and manage examinations.",
+      path: "/admin/exams",
     },
     {
-      name: "Database Management",
-      subject: "DBMS & SQL",
-      students: 64,
-      questions: 20,
-      status: "Active",
+      code: "Q",
+      title: "Manage Questions",
+      description: "Add and manage exam questions.",
+      path: "/admin/questions",
     },
     {
-      name: "Data Structures",
-      subject: "DSA",
-      students: 58,
-      questions: 30,
-      status: "Draft",
+      code: "QB",
+      title: "Question Bank",
+      description: "Upload PDFs, extract and approve MCQs.",
+      path: "/admin/question-bank",
+    },
+    {
+      code: "AQ",
+      title: "Assign Questions",
+      description: "Select approved questions for an exam.",
+      path: "/admin/assign-questions",
+    },
+    {
+      code: "RES",
+      title: "View Results",
+      description: "Review student exam results.",
+      path: "/admin/results",
     },
   ];
 
   return (
     <div className="admin-dashboard">
-
-      {/* ================= NAVBAR ================= */}
-
       <nav className="dashboard-navbar">
         <div className="dashboard-container">
-
-          <Link
-            to="/admin/dashboard"
-            className="dashboard-logo"
-          >
+          <Link to="/admin/dashboard" className="dashboard-logo">
             ExamPro
           </Link>
 
           <div className="dashboard-nav-links">
+            <Link to="/admin/dashboard">Dashboard</Link>
+            <Link to="/admin/students">Students</Link>
+            <Link to="/admin/exams">Exams</Link>
+            <Link to="/admin/questions">Questions</Link>
+            <Link to="/admin/question-bank">Question Bank</Link>
+            <Link to="/admin/assign-questions">Assign Questions</Link>
+            <Link to="/admin/results">Results</Link>
 
-            <Link to="/admin/dashboard">
-              Dashboard
-            </Link>
-
-            <Link to="/admin/students">
-              Students
-            </Link>
-
-            <Link to="/admin/exams">
-              Exams
-            </Link>
-
-            <Link to="/admin/questions">
-              Questions
-            </Link>
-
-            <Link to="/admin/results">
-              Results
-            </Link>
-
-            <button
-              className="logout-btn"
-              onClick={logout}
-            >
+            <button className="logout-btn" onClick={logout}>
               Logout
             </button>
-
           </div>
-
         </div>
       </nav>
 
-      {/* ================= MAIN ================= */}
-
-      <main className="dashboard-container">
-
-        {/* ================= WELCOME ================= */}
-
+      <main className="dashboard-container admin-main">
         <section className="admin-welcome-section">
-
-          <div>
-
-            <p className="dashboard-label">
-              ADMINISTRATOR PANEL
-            </p>
+          <div className="admin-welcome-content">
+            <p className="dashboard-label">ADMINISTRATOR PANEL</p>
 
             <h1>
-              Welcome, {user?.name || "ExamPro Admin"} 👋
+              Welcome, {user?.name || "ExamPro Admin"}
             </h1>
 
             <p>
-              Manage students, examinations, questions and results
-              from one place.
+              Manage students, examinations, questions
+              and results from one place.
             </p>
-
           </div>
 
           <div className="admin-avatar">
-            A
+            {user?.name
+              ? user.name.charAt(0).toUpperCase()
+              : "A"}
           </div>
-
         </section>
 
-        {/* ================= STATISTICS ================= */}
+        {error && (
+          <div className="alert alert-danger mt-3">
+            {error}
+          </div>
+        )}
 
-        <section className="stats-grid">
-
-          {statistics.map((stat, index) => (
-
-            <div
-              className="stat-card"
-              key={index}
-            >
-
-              <div className="stat-icon">
-                {stat.icon}
-              </div>
+        <section className="stats-grid admin-stats-grid">
+          {statCards.map((stat) => (
+            <div className="stat-card" key={stat.code}>
+              <div className="stat-icon">{stat.code}</div>
 
               <div>
-
                 <h3>
-                  {stat.value}
+                  {loading ? "..." : stat.value.toLocaleString()}
                 </h3>
-
-                <p>
-                  {stat.label}
-                </p>
-
+                <p>{stat.label}</p>
               </div>
-
             </div>
-
           ))}
-
         </section>
 
-        {/* ================= QUICK ACTIONS ================= */}
-
-        <section className="dashboard-section">
-
+        <section className="dashboard-section admin-quick-section">
           <div className="section-header">
-
             <div>
-
-              <h2>
-                Quick Actions
-              </h2>
-
-              <p>
-                Quickly access the main administration functions.
-              </p>
-
+              <h2>Quick Actions</h2>
+              <p>Access the main administration functions.</p>
             </div>
-
           </div>
 
           <div className="admin-action-grid">
+            {adminActions.map((action) => (
+              <Link
+                to={action.path}
+                className="admin-action-card"
+                key={action.path}
+              >
+                <div className="admin-action-icon">
+                  {action.code}
+                </div>
 
-            <Link
-              to="/admin/students"
-              className="admin-action-card"
-            >
+                <div className="admin-action-content">
+                  <h3>{action.title}</h3>
+                  <p>{action.description}</p>
+                </div>
 
-              <div className="admin-action-icon">
-                👨‍🎓
-              </div>
-
-              <div>
-
-                <h3>
-                  Manage Students
-                </h3>
-
-                <p>
-                  View and manage registered students.
-                </p>
-
-              </div>
-
-            </Link>
-
-            <Link
-              to="/admin/exams"
-              className="admin-action-card"
-            >
-
-              <div className="admin-action-icon">
-                📝
-              </div>
-
-              <div>
-
-                <h3>
-                  Manage Exams
-                </h3>
-
-                <p>
-                  Create, edit and manage examinations.
-                </p>
-
-              </div>
-
-            </Link>
-
-            <Link
-              to="/admin/questions"
-              className="admin-action-card"
-            >
-
-              <div className="admin-action-icon">
-                ❓
-              </div>
-
-              <div>
-
-                <h3>
-                  Manage Questions
-                </h3>
-
-                <p>
-                  Add and manage examination questions.
-                </p>
-
-              </div>
-
-            </Link>
-
-            <Link
-              to="/admin/results"
-              className="admin-action-card"
-            >
-
-              <div className="admin-action-icon">
-                📊
-              </div>
-
-              <div>
-
-                <h3>
-                  View Results
-                </h3>
-
-                <p>
-                  Monitor student examination results.
-                </p>
-
-              </div>
-
-            </Link>
-
+                <span className="admin-action-arrow">
+                  →
+                </span>
+              </Link>
+            ))}
           </div>
-
         </section>
 
-        {/* ================= RECENT EXAMS ================= */}
-
         <section className="dashboard-section">
-
           <div className="section-header">
-
             <div>
-
-              <h2>
-                Recent Examinations
-              </h2>
-
-              <p>
-                Overview of examinations created in ExamPro.
-              </p>
-
+              <h2>Recent Examinations</h2>
+              <p>Latest examinations stored in the database.</p>
             </div>
 
-            <Link
-              to="/admin/exams"
-              className="view-all-btn"
-            >
+            <Link to="/admin/exams" className="view-all-btn">
               View All
             </Link>
-
           </div>
 
           <div className="admin-table-card">
-
             <div className="admin-table-header">
-
-              <span>
-                Examination
-              </span>
-
-              <span>
-                Subject
-              </span>
-
-              <span>
-                Students
-              </span>
-
-              <span>
-                Questions
-              </span>
-
-              <span>
-                Status
-              </span>
-
+              <span>Examination</span>
+              <span>Subject</span>
+              <span>Students</span>
+              <span>Questions</span>
+              <span>Status</span>
             </div>
 
-            {recentExams.map((exam, index) => (
-
-              <div
-                className="admin-table-row"
-                key={index}
-              >
-
-                <strong>
-                  {exam.name}
-                </strong>
-
-                <span>
-                  {exam.subject}
-                </span>
-
-                <span>
-                  {exam.students}
-                </span>
-
-                <span>
-                  {exam.questions}
-                </span>
-
-                <span
-                  className={
-                    exam.status === "Active"
-                      ? "active-status"
-                      : "draft-status"
-                  }
+            {loading ? (
+              <p className="p-4 mb-0">
+                Loading examinations...
+              </p>
+            ) : recentExams.length === 0 ? (
+              <p className="p-4 mb-0">
+                No examinations found. Create your first exam.
+              </p>
+            ) : (
+              recentExams.map((exam) => (
+                <div
+                  className="admin-table-row"
+                  key={exam._id}
                 >
-                  {exam.status}
-                </span>
+                  <strong>{exam.name}</strong>
+                  <span>{exam.subject}</span>
+                  <span>{exam.students}</span>
+                  <span>{exam.questions}</span>
 
-              </div>
-
-            ))}
-
+                  <span>
+                    <span
+                      className={
+                        exam.status === "Active"
+                          ? "active-status"
+                          : "draft-status"
+                      }
+                    >
+                      {exam.status}
+                    </span>
+                  </span>
+                </div>
+              ))
+            )}
           </div>
-
         </section>
 
-        {/* ================= SYSTEM INFORMATION ================= */}
-
         <section className="admin-info-section">
-
           <div>
-
             <span className="admin-info-label">
               SYSTEM STATUS
             </span>
 
             <h2>
-              ExamPro is running normally
+              {error
+                ? "Dashboard data unavailable"
+                : loading
+                  ? "Loading dashboard"
+                  : "ExamPro dashboard is connected"}
             </h2>
 
             <p>
-              All examination services are currently available.
+              {error
+                ? "Check the backend server and database connection."
+                : "Statistics are retrieved from the database."}
             </p>
-
           </div>
 
           <div className="system-status">
-            ● Online
+            <span className="status-dot"></span>
+            {error ? "Check Connection" : loading ? "Loading" : "Connected"}
           </div>
-
         </section>
-
       </main>
 
-      {/* ================= FOOTER ================= */}
-
       <footer className="dashboard-footer">
-
-        <p>
-          © 2026 ExamPro. Admin Panel.
-        </p>
-
+        <p>© 2026 ExamPro. Admin Panel.</p>
       </footer>
-
     </div>
   );
 };

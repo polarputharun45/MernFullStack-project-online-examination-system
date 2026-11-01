@@ -1,0 +1,209 @@
+
+/* Page background */
+.auth-page {
+  width: 100% !important;
+  min-height: 100vh;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #fff4c2, #ffe7a3);
+}
+
+/* Extend the white card to left and right */
+.auth-page > .login-card {
+  display: block !important;
+  width: 100% !important;
+  max-width: 1000px !important;
+  min-height: 680px;
+  margin: 0 auto !important;
+  padding: 55px 85px !important;
+  flex: 0 1 1000px !important;
+  box-sizing: border-box !important;
+  background: #ffffff !important;
+  border-radius: 24px;
+  box-shadow: 0 12px 40px rgba(80, 60, 20, 0.13);
+}
+
+/* Header */
+.login-header {
+  text-align: center;
+  margin-bottom: 38px;
+}
+
+.login-logo-mark {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  border-radius: 16px;
+  background: #f4b400;
+  color: white;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.login-header h1 {
+  font-size: 40px;
+  margin: 0 0 12px;
+}
+
+.login-header h2 {
+  font-size: 32px;
+  margin: 0 0 12px;
+}
+
+.login-header p {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* Labels */
+.login-field {
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.login-field label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+/* Larger inputs and placeholder text */
+.login-field input {
+  display: block;
+  width: 100% !important;
+  height: 64px !important;
+  padding: 0 20px !important;
+  font-size: 20px !important;
+  border: 1px solid #d5d5d5;
+  border-radius: 12px;
+  box-sizing: border-box !important;
+}
+
+.login-field input::placeholder {
+  font-size: 19px !important;
+  color: #777777;
+  opacity: 1;
+}
+
+.login-field input:focus {
+  outline: none;
+  border-color: #e5a900;
+  box-shadow: 0 0 0 3px rgba(244, 180, 0, 0.15);
+}
+
+/* Password field */
+.login-password-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.login-password-wrap input {
+  padding-right: 90px !important;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #a87900;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Login button */
+.login-submit {
+  display: block;
+  width: 100% !important;
+  min-height: 64px !important;
+  margin-top: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #f4b400;
+  color: #222222;
+  font-size: 21px !important;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-submit:hover {
+  background: #e5a900;
+}
+
+.login-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Error message */
+.login-error {
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #ffe8e8;
+  color: #b42318;
+  font-size: 16px;
+}
+
+/* Bottom links */
+.login-register {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.login-home {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.login-register a,
+.login-home a {
+  color: #a87900;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Mobile screen */
+@media (max-width: 600px) {
+  .auth-page {
+    padding: 12px !important;
+  }
+
+  .auth-page > .login-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: auto;
+    padding: 30px 20px !important;
+    flex-basis: 100% !important;
+  }
+
+  .login-header h1 {
+    font-size: 32px;
+  }
+
+  .login-header h2 {
+    font-size: 25px;
+  }
+
+  .login-field input {
+    height: 56px !important;
+    font-size: 17px !important;
+  }
+
+  .login-field input::placeholder {
+    font-size: 16px !important;
+  }
+}
