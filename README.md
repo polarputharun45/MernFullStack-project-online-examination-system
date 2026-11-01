@@ -1,158 +1,217 @@
-# ExamPro – Online Examination System
 
-## About the Project
+# ExamPro - Online Examination System
 
-ExamPro is a full-stack online examination system that I developed using the MERN stack.
+ExamPro is a MERN stack based online examination system developed as a full-stack project.
 
-The main idea behind this project is to make the examination process easier for both students and administrators. Instead of managing exams manually, admins can create exams, add questions, manage students, and check results through the application.
+The main purpose of this project is to make the examination process easier for both students and administrators.
 
-Students can log in, view available exams, attend them online, and check their results.
-
-I also implemented a Forgot Password feature that allows users to reset their passwords through an email link.
-
-## Features
-
-### Admin
-- Admin login and dashboard.
-- View and manage student details.
-- Create and manage exams.
-- Add and manage questions.
-- Upload MCQ questions using PDF files.
-- Maintain a question bank.
-- Approve and assign questions to exams.
-- View student examination results.
-
-### Student
-- Student registration and login.
-- Student dashboard.
-- View available exams.
-- Read exam instructions before starting.
-- Attend exams online.
-- Countdown timer during the exam.
-- Automatic submission when the timer reaches zero.
-- View exam results.
-
-### Authentication
-- Login and registration.
-- Separate access for Admin and Student.
-- Forgot Password option.
-- Password reset through email.
-- Password hashing for security.
+Students can create an account, log in, view available exams, attend examinations and check their results. Administrators can manage exams, questions and student details through the admin dashboard.
 
 ## Technologies Used
 
-- **Frontend:** React.js, Vite, Bootstrap 5
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB Atlas
-- **API:** Axios
-- **Routing:** React Router DOM
-- **Email:** Nodemailer
-- **Authentication:** JWT and bcrypt
-- **File Handling:** Multer and PDF parsing
-- **Version Control:** Git and GitHub
+**Frontend**
+- React.js
+- Vite
+- JavaScript
+- HTML
+- CSS
+- Bootstrap
+
+**Backend**
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
+
+**Tools**
+- Visual Studio Code
+- Git and GitHub
+- Vercel
+- Render
+
+## Features
+
+### Student Module
+- Student registration and login
+- Student dashboard
+- View available examinations
+- View examination instructions
+- Attend online examinations
+- Submit exam answers
+- Check examination results
+
+### Admin Module
+- Admin login
+- Admin dashboard
+- Create and manage examinations
+- Manage question bank
+- Add, edit and manage questions
+- Assign questions to examinations
+- Manage student details
+- View examination results
+
+## Screenshots
+
+### Student Side
+
+**Home Page**
+
+![Home Page](docs/screenshots/home.png.png)
+
+**Student Registration**
+
+![Student Registration](docs/screenshots/student-registration.png.png)
+
+**Student Login**
+
+![Student Login](docs/screenshots/student-login.png.png)
+
+**Student Dashboard**
+
+![Student Dashboard](docs/screenshots/student-dashboard.png.png)
+
+**Available Exams**
+
+![Available Exams](docs/screenshots/available-exams.png.png)
+
+**My Results**
+
+![My Results](docs/screenshots/results-empty.png.png)
+
+### Admin Side
+
+**Admin Dashboard**
+
+![Admin Dashboard](docs/screenshots/admin-dashboard.png.png)
+
+**Manage Exams**
+
+![Manage Exams](docs/screenshots/manage-exams.png.png)
+
+**Question Bank**
+
+![Question Bank](docs/screenshots/question-bank.png.png)
+
+**Manage Questions**
+
+![Manage Questions](docs/screenshots/manage-questions.png.png)
+
+**Assign Questions**
+
+![Assign Questions](docs/screenshots/assign-questions.png.png)
+
+**Manage Students**
+
+![Manage Students](docs/screenshots/manage-students.png.png)
+
+**View Results**
+
+![View Results](docs/screenshots/view-results.png.png)
 
 ## Project Structure
 
 ```text
-ONLINE EXAMINATION SYSTEM/
+MernFullStack-project-online-examination-system/
 │
-├── backend/
+├── Backend/
+│   ├── config/
 │   ├── controllers/
+│   ├── middleware/
 │   ├── models/
 │   ├── routes/
-│   ├── .env
-│   └── package.json
+│   └── server.js
+│
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── App.jsx
+│   └── main.jsx
 │
 ├── public/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── context/
-│   └── assets/
-│
+├── docs/
+│   └── screenshots/
 ├── package.json
-├── .gitignore
+├── vite.config.js
 └── README.md
 ```
 
-## How to Run the Project
+## How to Run Locally
 
-### Step 1: Clone the Repository
-
-```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-```
-
-### Step 2: Open the Project
+### 1. Clone the Repository
 
 ```bash
-cd "ONLINE EXAMINATION SYSTEM"
+git clone https://github.com/polarputharun45/MernFullStack-project-online-examination-system.git
 ```
 
-### Step 3: Install Frontend Packages
+### 2. Install Frontend Dependencies
+
+Run this command in the project root:
 
 ```bash
 npm install
 ```
 
-### Step 4: Install Backend Packages
+### 3. Install Backend Dependencies
 
 ```bash
-cd backend
+cd Backend
 npm install
 ```
 
-### Step 5: Configure Environment Variables
+### 4. Configure Environment Variables
 
-Create a `.env` file inside the backend folder.
+Create a `.env` file inside the `Backend` folder.
+
+Add the required variables:
 
 ```env
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_jwt_secret
 EMAIL_USER=your_email
-EMAIL_PASS=your_gmail_app_password
+EMAIL_APP_PASSWORD=your_email_app_password
 CLIENT_URL=http://localhost:5173
+ADMIN_PASSWORD=your_admin_password
 ```
 
-Add your own credentials. Do not upload the `.env` file to GitHub.
+Replace the sample values with your own credentials. Do not upload your `.env` file or secret values to GitHub.
 
-### Step 6: Start the Backend
+### 5. Start the Backend
 
-Run the backend start command configured in `backend/package.json`.
+Inside the Backend folder:
 
-### Step 7: Start the Frontend
+```bash
+npm start
+```
 
-Open another terminal in the main project folder and run:
+### 6. Start the Frontend
+
+Open another terminal in the project root:
 
 ```bash
 npm run dev
 ```
 
-Open the local URL shown in the terminal.
+## Live Deployment
 
-## How the Application Works
+**Frontend:**  
+https://mern-full-stack-project-online-exam.vercel.app
 
-1. Students and admins log in to the application.
-2. Admin creates exams and manages questions.
-3. Students can see the exams assigned to them.
-4. Students start the exam after reading the instructions.
-5. They answer questions within the given time.
-6. After submission, they can check their results.
+**Backend:**  
+https://mernfullstack-project-online-examination.onrender.com
 
 ## Future Improvements
 
-- Better exam monitoring.
-- More detailed student performance reports.
-- Improved exam security.
-- Additional analytics for administrators.
+- Improve the examination interface.
+- Add more result analysis features.
+- Improve application performance.
+- Add more features for students and administrators.
 
-## Project Details
+## Developed By
 
-**Project Name:** ExamPro – Online Examination System
+**SPIRIT**
 
-**Project Type:** MERN Stack Full-Stack Project
-
-**Database:** MongoDB Atlas
-
-**Status:** Developed; further improvements are possible.
+MERN Stack Online Examination System
